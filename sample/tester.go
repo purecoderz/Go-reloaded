@@ -23,6 +23,11 @@ func main() {
 
 	datas := Tester()
 
+	err := os.WriteFile("log.txt", []byte{}, 0644)
+	if err != nil {
+		fmt.Println("error clearing log file: ", err)
+	}
+
 	for i, info := range datas {
 		if i == 4 {
 			fmt.Println("Your code successfully passed the audit test")
@@ -38,8 +43,9 @@ func main() {
 		out, err := cmd.CombinedOutput()
 
 		if err != nil {
-			fmt.Printf("Task %d: Failed ❌\nError: %s\nCheck log file for the error details\n\n", i+1, err)
-			err := os.WriteFile("log.txt", []byte(out), 0644)
+			fmt.Printf("Task %d: Failed ❌\nError: %s\nCheck log file for the error details\n", i+1, err)
+
+			err := AppendToFile("log.txt", string(out))
 			if err != nil {
 				fmt.Println("Error Writing to file", err)
 			}
@@ -52,11 +58,23 @@ func main() {
 			fmt.Printf("Error Reading %s file: %s", os.Args[3], err)
 			continue
 		}
-		if string(checkFile) == info.solution {
+		file := string(checkFile)
+
+		if file == info.solution {
 			fmt.Printf("Task %d: Successfully ✅\n", i+1)
 			fmt.Println(string(out))
+			txt := fmt.Sprintf("Task %d: Successfully ✅\nTask: %s\nExpected: %s\nFound:%s\n", i+1, info.task, info.solution, file)
+			err = AppendToFile("log.txt", txt)
+			if err != nil {
+				fmt.Println("Error Writing to file", err)
+			}
 		} else {
-			fmt.Printf("Task %d: Comparism Failed ❌\n", i+1)
+			fmt.Printf("Task %d: Comparism Failed ❌\n\n", i+1)
+			txt := fmt.Sprintf("Task %d: Failed ❌\nTask: %s\nExpected: %s\nFound:%s\n", i+1, info.task, info.solution, file)
+			err = AppendToFile("log.txt", txt)
+			if err != nil {
+				fmt.Println("Error Writing to file", err)
+			}
 		}
 
 	}
@@ -122,4 +140,22 @@ func Tester() []Checker {
 	}
 
 	return data
+}
+
+func AppendToFile(filename string, text string) error {
+	// 1. Open the file:
+	// O_WRONLY: Open for writing only
+	// O_CREATE: Create it if it doesn't exist
+	// O_APPEND: Start writing at the end of the file
+	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil {
+		return err
+	}
+
+	// 2. Always defer closing the file so it cleans up after itself
+	defer f.Close()
+
+	// 3. Write the text (plus a newline so the next write starts on a fresh line)
+	_, err = f.WriteString(text + "\n")
+	return err
 }
