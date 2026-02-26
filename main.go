@@ -36,6 +36,8 @@ func main() {
 		switch words[index] {
 		case "'s", "'ve", "'t", "'re":
 			words, index = packs.Apostrophe(words, index)
+		case "a", "A":
+			packs.FixVowels(words, index)
 		case "'":
 			words, index, start, end = packs.Quotes(words, index, start, end)
 		case "(cap)":
@@ -60,17 +62,16 @@ func main() {
 
 	}
 
-	// fixed vowels 
-	packs.FixVowels(words)
-
+	// join the words back
 	formattedText := strings.Join(words, " ")
 
-	err = os.WriteFile(os.Args[2],[]byte(formattedText), 0644) 
+	// write it to the output
+	err = os.WriteFile(os.Args[2], []byte(formattedText), 0644)
 	if err != nil {
-		fmt.Println("Error writing to File:",err)
+		fmt.Println("Error writing to File:", err)
 		os.Exit(1)
 	}
 
-	fmt.Println("Completed sucessful")
+	fmt.Println("Completed sucessfully")
 
 }

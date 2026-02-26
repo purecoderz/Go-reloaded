@@ -1,0 +1,4 @@
+# command-line-arguments
+./main.go:65:18: not enough arguments in call to packs.FixVowels
+	have ([]string)
+	want ([]string, int)
