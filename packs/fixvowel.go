@@ -38,11 +38,10 @@ func FixVowels(words []string, index int) {
 			}
 		}
 
-		runes := []rune(words[index+1])
+		runes := []rune(words[index+n])
 
 		if vowel[unicode.ToLower(runes[0])] {
 			words[index] += "n"
 		}
-
 	}
 }
