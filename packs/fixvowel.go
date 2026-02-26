@@ -38,14 +38,11 @@ func FixVowels(words []string, index int) {
 			}
 		}
 
-		for _, char := range words[index+n] {
-			if unicode.IsLetter(char) {
-				if vowel[unicode.ToLower(char)] {
-					words[index] += "n"
-				}
-				break // We found the letter, stop checking!
-			}
-		}
-	}
+		runes := []rune(words[index+1])
 
+		if vowel[unicode.ToLower(runes[0])] {
+			words[index] += "n"
+		}
+
+	}
 }
