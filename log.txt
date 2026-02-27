@@ -18,10 +18,10 @@ Task: harold wilson (cap, 2) : ' I am a optimist ,but a optimist who carries a r
 Expected: Harold Wilson: 'I am an optimist, but an optimist who carries a raincoat.'
 Found:Harold Wilson: 'I am an optimist, but an optimist who carries a raincoat.'
 
-Task 5: Failed ❌
+Task 5: Successfully ✅
 Task: It takes a (up) hour to eat a (cap) apple .
 Expected: It takes AN hour to eat An apple.
-Found:It takes An hour to eat An apple.
+Found:It takes AN hour to eat An apple.
 
 Task 6: Successfully ✅
 Task: hello world (up, 50)

@@ -102,6 +102,8 @@ func main() {
 
 	for index := 0; index < len(words); index++ {
 		switch words[index] {
+		case "a", "A":
+			packs.FixVowels(words, index)
 		case "(cap)":
 			words, index = packs.ChangeCase(index, words, packs.ToTitleCase)
 		case "(cap,":
@@ -121,10 +123,7 @@ func main() {
 		}
 
 	}
-
-	// fixed vowels
-	packs.FixVowels2(words)
-
+	
 	start := -1
 	end := -1
 	for index := 0; index < len(words); index++ {
